@@ -4,7 +4,7 @@ import javax.crypto.*;
 import java.security.*;
 
 public class Main {
-    public static void main(String[] args) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
+    public static void main(String[] args) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException, SignatureException {
         Person person1 = new Person("Harry", "Geluveld", "0496742300");
         Person person2 = new Person("Barry", "Marke", "049651524");
         Person person1Fake = new Person("Garry", "Geluveld", "0496742300");
@@ -85,7 +85,18 @@ public class Main {
         System.out.println("Decrypted Text");
         System.out.println(decryptedText_Asym);
 
+        System.out.println();
+        System.out.println("************* DIGITAL SIGNING *************");
+        Signature signatureAlgorithm = Signature.getInstance("SHA256WithRSA");
+        signatureAlgorithm.initSign(keyPair.getPrivate());
+        signatureAlgorithm.update(textToEncrypt.getBytes());
+        byte[] signature = signatureAlgorithm.sign();
 
+        Signature verificationAlgorithm = Signature.getInstance("SHA256WithRSA");
+        verificationAlgorithm.initVerify(keyPair.getPublic());
+        verificationAlgorithm.update(textToEncrypt.getBytes());
+        boolean matches = verificationAlgorithm.verify(signature);
+        System.out.println("signature matches: " + matches);
     }
 }
 
