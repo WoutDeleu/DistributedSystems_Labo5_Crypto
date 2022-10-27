@@ -10,9 +10,9 @@ public class Main {
         Person person1Fake = new Person("Garry", "Geluveld", "0496742300");
 
         // Preps
-        byte[] person1_byteArray = person1.getBytes();
-        byte[] person2_byteArray = person2.getBytes();
-        byte[] person1Fake_byteArray = person1Fake.getBytes();
+        byte[] person1_byteArray = person1.toString().getBytes();
+        byte[] person2_byteArray = person2.toString().getBytes();
+        byte[] person1Fake_byteArray = person1Fake.toString().getBytes();
         System.out.println();
 
 
@@ -20,21 +20,21 @@ public class Main {
         System.out.println("************* HASHING *************");
         MessageDigest md = MessageDigest.getInstance("SHA-256");
         System.out.println("Original Person1");
-        System.out.print(person1_byteArray);
+        System.out.print((new String(person1_byteArray)));
         md.update(person1_byteArray);
         byte[] hash_person1 = md.digest();
         System.out.println();
         System.out.println("Hashed Person1");
-        System.out.println(hash_person1);
+        System.out.println(new String(hash_person1));
 
         System.out.println();
         System.out.println("Original Person1Fake");
-        System.out.print(person1Fake_byteArray);
+        System.out.print(new String(person1Fake_byteArray));
         md.update(person1Fake_byteArray);
         byte[] hash_person1Fake = md.digest();
         System.out.println();
         System.out.println("Hashed Person1Fake");
-        System.out.println(hash_person1Fake);
+        System.out.println(new String(hash_person1Fake));
 
 
         // Symmetric Encryption
@@ -86,6 +86,7 @@ public class Main {
         System.out.println(decryptedText_Asym);
 
 
+        // Digital Signing
     }
 }
 
