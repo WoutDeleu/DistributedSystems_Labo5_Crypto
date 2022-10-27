@@ -1,9 +1,7 @@
 //https://docs.oracle.com/javase/7/docs/technotes/guides/security/crypto/CryptoSpec.html
 
 import javax.crypto.*;
-import java.security.InvalidKeyException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+import java.security.*;
 
 public class Main {
     public static void main(String[] args) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
@@ -45,8 +43,7 @@ public class Main {
         // AES: 128, 192, and 256 bits to encrypt and decrypt data in blocks of 128 bits
         // AES: 512 -> 1024, (+64)
         System.out.println("Original Text");
-        String textToEncrypt = "Franz Wilhelm Junghuhn (Mansfeld, 26 oktober 1809 – Lembang, 24 april 1864) was een Pruisisch-Nederlands ontdekkingsreiziger, indoloog, landmeter, arts, geograaf, geoloog en botanicus. Als onderzoeker bracht hij in dienst van de autoriteiten van Nederlands-Indië de geografie, geologie en natuur van Java en de Bataklanden op Sumatra in kaart. Naast het wetenschappelijk vastleggen van zijn ontdekkingen schreef Junghuhn ook boeken over zijn reizen, bekend vanwege hun gekleurde litho's van Indische landschappen.";
-        System.out.println(textToEncrypt);
+        String textToEncrypt = "Franz Wilhelm Junghuhn (Mansfeld, 26 oktober 1809 – Lembang, 24 april 1864)";
         System.out.println();
 
         KeyGenerator keygen = KeyGenerator.getInstance("AES");
@@ -70,6 +67,24 @@ public class Main {
         // Asymmetric Encryption
         System.out.println();
         System.out.println("************* ASYNC ENCR *************");
+
+        KeyPairGenerator kpGen = KeyPairGenerator.getInstance("RSA");
+        kpGen.initialize(1024);
+        KeyPair keyPair = kpGen.generateKeyPair();
+
+        PrivateKey privateKey = keyPair.getPrivate();
+        PublicKey publicKey = keyPair.getPublic();
+
+        System.out.println(publicKey);
+
+        cipher = Cipher.getInstance("RSA");
+        cipher.init(Cipher.ENCRYPT_MODE, publicKey);
+        System.out.println(encryptedBytes.length); //Lengte van de bytearray checken (meg niet langer zijn dan 117 bytes
+        byte[] asymEncryptedText = cipher.doFinal(encryptedBytes);
+        cipher.init(Cipher.DECRYPT_MODE, privateKey);
+        byte[] asymDecryptedText = cipher.doFinal(asymEncryptedText);
+        System.out.println(asymDecryptedText);
+
 
     }
 }
