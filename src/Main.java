@@ -66,24 +66,24 @@ public class Main {
 
         // Asymmetric Encryption
         System.out.println();
-        System.out.println("************* ASYNC ENCR *************");
+        System.out.println("************* ASYM ENCR *************");
 
         KeyPairGenerator kpGen = KeyPairGenerator.getInstance("RSA");
         kpGen.initialize(1024);
         KeyPair keyPair = kpGen.generateKeyPair();
-
         PrivateKey privateKey = keyPair.getPrivate();
         PublicKey publicKey = keyPair.getPublic();
 
-        System.out.println(publicKey);
-
         cipher = Cipher.getInstance("RSA");
         cipher.init(Cipher.ENCRYPT_MODE, publicKey);
-        System.out.println(encryptedBytes.length); //Lengte van de bytearray checken (meg niet langer zijn dan 117 bytes
-        byte[] asymEncryptedText = cipher.doFinal(encryptedBytes);
+        byte[] asymEncryptedText = cipher.doFinal(textToEncrypt.getBytes());
+        System.out.println("Encrypted Text");
+        System.out.println(new String(asymEncryptedText));
         cipher.init(Cipher.DECRYPT_MODE, privateKey);
         byte[] asymDecryptedText = cipher.doFinal(asymEncryptedText);
-        System.out.println(asymDecryptedText);
+        String decryptedText_Asym = new String(asymDecryptedText);
+        System.out.println("Decrypted Text");
+        System.out.println(decryptedText_Asym);
 
 
     }
